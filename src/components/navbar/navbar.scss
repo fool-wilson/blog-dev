@@ -1,0 +1,29 @@
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &__bar {
+    width: 80vw;
+    height: 30%;
+    background-color: bisque;
+    &__list {
+      width: 100%;
+      justify-content: space-evenly;
+    }
+    &__text {
+      font-size: 1.5rem;
+    }
+  }
+  &__header {
+    width: 100vw;
+    height: 35vh;
+    background-color: aqua;
+  }
+  &__name {
+    width: 80vw;
+    height: 70%;
+    font-family: 'Segoe Script';
+    font-size: 3rem;
+    background-color: aquamarine;
+  }
+}

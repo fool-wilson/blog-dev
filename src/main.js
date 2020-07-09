@@ -9,5 +9,3 @@ import 'bootstrap'
 import 'animate.css'
 import 'aos/dist/aos.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-
-import './scss/test.scss'

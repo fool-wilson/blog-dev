@@ -4,10 +4,11 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin")
 
 module.exports = {
   entry: {
-    "build": './src/main.js',
-    "about": ['./src/js/about.js', './src/scss/about.scss'],
-    "notes": ['./src/js/notes.js', './src/scss/notes.scss'],
-    "portfolios": ['./src/js/portfolios.js', './src/scss/portfolios.scss'],
+    'build': './src/main.js',
+    'about': ['./src/js/about.js', './src/scss/about.scss'],
+    'home': ['./src/js/home.js', './src/scss/home.scss'],
+    'notes': ['./src/js/notes.js', './src/scss/notes.scss'],
+    'portfolios': ['./src/js/portfolios.js', './src/scss/portfolios.scss'],
   },
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -23,17 +24,24 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          "style-loader",
-          "css-loader"
-        ]
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader'
+        })
       },
       {
         test: /\.(s[ac]ss)$/,
         use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: ["css-loader", "sass-loader"]
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
         })
+      },
+      {
+        test: /\.html$/,
+        loader: 'html-loader',
+        options: {
+          minimize: true
+        }
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
@@ -54,11 +62,11 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin({
-      filename: 'css/[name].css'
+      filename: 'assets/css/[name].min.css'
     }),
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
+      $: 'jquery',
+      jQuery: 'jquery'
     })
   ],
   devtool: '#eval-source-map',
