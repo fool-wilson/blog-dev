@@ -2,10 +2,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   &__bar {
     width: 80vw;
     height: 30%;
     background-color: bisque;
+    &--sticky {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      max-height: 8vh;
+    }
+    &--hidden {
+      top: -8vh;
+    }
     &__list {
       width: 100%;
       justify-content: space-evenly;
@@ -15,7 +25,7 @@
     }
   }
   &__header {
-    width: 100vw;
+    width: 100%;
     height: 35vh;
     background-color: aqua;
   }
@@ -25,5 +35,17 @@
     font-family: 'Segoe Script';
     font-size: 3rem;
     background-color: aquamarine;
+  }
+}
+.btn {
+  font-family: 'Microsoft JhengHei';
+  display: inline-block;
+	width: 125px;
+  height: 100%;
+  > a {
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

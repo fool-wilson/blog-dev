@@ -6,7 +6,7 @@ module.exports = {
   entry: {
     'build': './src/main.js',
     'about': ['./src/js/about.js', './src/scss/about.scss'],
-    'home': ['./src/js/home.js', './src/scss/home.scss'],
+    'home': './src/js/home.js',
     'notes': ['./src/js/notes.js', './src/scss/notes.scss'],
     'portfolios': ['./src/js/portfolios.js', './src/scss/portfolios.scss'],
   },
@@ -31,10 +31,12 @@ module.exports = {
       },
       {
         test: /\.(s[ac]ss)$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'sass-loader']
-        })
+        loader: ['webpack-extract-css-hot-reload'].concat(
+          ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: ['css-loader', 'sass-loader']
+          })
+        )
       },
       {
         test: /\.html$/,
@@ -47,12 +49,14 @@ module.exports = {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file-loader',
         options: {
-          name: 'imgs/[name].[ext]?[hash]'
+          name: 'assets/imgs/[name].[ext]?[hash]'
         }
       }
     ]
   },
   devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    publicPath: '/',
     historyApiFallback: true,
     noInfo: true,
     overlay: true
@@ -62,7 +66,7 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin({
-      filename: 'assets/css/[name].min.css'
+      filename: 'assets/css/[name].min.css?[hash]'
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',

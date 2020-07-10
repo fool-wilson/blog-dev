@@ -3,9 +3,10 @@
 import $ from 'jquery'
 import Axios from 'axios'
 import Aos from 'aos'
-import 'bootstrap'
+// import 'bootstrap'
 
 // import css files
 import 'animate.css'
 import 'aos/dist/aos.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import './scss/_layout.scss'
+// import 'bootstrap/dist/css/bootstrap.min.css'
