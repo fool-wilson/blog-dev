@@ -2,10 +2,7 @@ import './nav.scss';
 import nav from './nav.html';
 
 let navDom = $(nav).contents();
-$('body').append(navDom);
-let navbarH = navDom.find('.nav__bar').height();
-let navBottomY = navDom.find('.nav__bar').offset().top + navbarH;
-let lastScrollY = new Number();
+let navbarH, navBottomY, lastScrollY;
 
 var showNavbarWithMouse = function(e) {
   if(e.clientY < navbarH) {
@@ -15,7 +12,7 @@ var showNavbarWithMouse = function(e) {
   }
 }
 
-window.onscroll = function() {
+function hideNavbarWithScroll() {
   let currentScrollY = this.scrollY;
   if(currentScrollY >= navBottomY) {
     $('.nav__bar').addClass('nav__bar--sticky');
@@ -31,3 +28,13 @@ window.onscroll = function() {
   }
   lastScrollY = currentScrollY;
 }
+
+export default {
+  init: function() {
+    $('body').append(navDom);
+    navbarH = navDom.find('.nav__bar').height();
+    navBottomY = navDom.find('.nav__bar').offset().top + navbarH;
+    lastScrollY = new Number();
+    window.onscroll = hideNavbarWithScroll;
+  }
+};
