@@ -1,21 +1,14 @@
-import './nav.scss';
 import nav from './nav.html';
+import './nav.scss';
 
-let navDom = $(nav).contents();
-let navbarH, navBottomY, lastScrollY;
+let [navbarH, navBottomY, lastScrollY] = [new Number(), new Number(), new Number()];
 
-var showNavbarWithMouse = function(e) {
-  if(e.clientY < navbarH) {
-    $('.nav__bar').removeClass('nav__bar--hidden');
-  } else {
-    $('.nav__bar').addClass('nav__bar--hidden');
-  }
-}
-
+/**
+ * Control navbar whether to show with scroll
+ */
 function hideNavbarWithScroll() {
   let currentScrollY = this.scrollY;
-  if(currentScrollY >= navBottomY) {
-    $('.nav__bar').addClass('nav__bar--sticky');
+  if(currentScrollY >= (navBottomY + navbarH)) {
     if(currentScrollY > lastScrollY) {
       $('.nav__bar').addClass('nav__bar--hidden');
       this.addEventListener('mousemove', showNavbarWithMouse);
@@ -23,18 +16,37 @@ function hideNavbarWithScroll() {
       $('.nav__bar').removeClass('nav__bar--hidden');
       this.removeEventListener('mousemove', showNavbarWithMouse);
     }
+  } else if(currentScrollY >= navBottomY) {
+    $('.nav__bar').addClass('nav__bar--sticky');
   } else {
     $('.nav__bar').removeClass('nav__bar--sticky');
   }
   lastScrollY = currentScrollY;
 }
 
-export default {
-  init: function() {
-    $('body').append(navDom);
-    navbarH = navDom.find('.nav__bar').height();
-    navBottomY = navDom.find('.nav__bar').offset().top + navbarH;
-    lastScrollY = new Number();
-    window.onscroll = hideNavbarWithScroll;
+/**
+ * initiate the navbar
+ */
+function init() {
+  let navDom = $(nav).contents();
+  $('body').append(navDom);
+  navbarH = navDom.find('.nav__bar').height();
+  navBottomY = navDom.find('.nav__bar').offset().top;
+  window.onscroll = hideNavbarWithScroll;
+}
+
+/**
+ * Control navbar whether to show with mouse
+ * @param {*} e Mouse event
+ */
+function showNavbarWithMouse(e) {
+  if(e.clientY < navbarH) {
+    $('.nav__bar').removeClass('nav__bar--hidden');
+  } else {
+    $('.nav__bar').addClass('nav__bar--hidden');
   }
+}
+
+export default {
+  init: init
 };

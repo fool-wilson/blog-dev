@@ -4,20 +4,24 @@
   align-items: center;
   flex-wrap: wrap;
   &__bar {
-    width: 80vw;
+    width: 100%;
     height: 30%;
-    background-color: bisque;
+    background-image: linear-gradient(
+      to bottom, #fdf67d, #fdef67,
+      #fde750, #fedf34, #ffd700
+    );
     &--sticky {
       position: fixed;
       top: 0;
-      width: 100%;
       max-height: 8vh;
+      transition: top .5s;
     }
     &--hidden {
       top: -8vh;
+      transition: top 1s;
     }
     &__list {
-      width: 100%;
+      width: 50%;
       justify-content: space-evenly;
     }
     &__text {
@@ -27,14 +31,21 @@
   &__header {
     width: 100%;
     height: 35vh;
-    background-color: aqua;
   }
   &__name {
-    width: 80vw;
+    width: 100%;
     height: 70%;
     font-family: 'Segoe Script';
-    font-size: 3rem;
-    background-color: aquamarine;
+    font-size: 3.5rem;
+    background-image: linear-gradient(
+      to bottom, #fffaf0, #fff9df,
+      #ffface, #fffabe, #fffcae,
+      #fefa9e, #fef88e, #fdf67d
+    );
+    > a {
+      color: initial;
+      text-decoration: none;
+    }
   }
 }
 .btn {
@@ -43,6 +54,7 @@
 	width: 125px;
   height: 100%;
   > a {
+    font-weight: bold;
     text-decoration: none;
     &:hover {
       text-decoration: underline;
