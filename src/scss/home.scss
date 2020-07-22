@@ -1,6 +1,6 @@
-body {
+.home {
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: #fafad2;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
