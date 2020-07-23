@@ -5,23 +5,55 @@ import Article from '../components/article/article.js';
 import Foot from '../components/foot/foot.js';
 import Nav from '../components/nav/nav.js';
 
+/**
+ * Initial home page view
+ */
 function init() {
   Nav.init();
   $('body').append('<div id="view" class="home"></div>');
   Foot.init();
 }
 
-function appendArticle() {
-  for(let i = 0; i < 5; i++) {
+/**
+ * Create article list
+ */
+function appendArticle(list) {
+  for(let l of list) {
     Article.create($('#view'), {
-      title: `Test Title-${i}`,
-      text: `學習當頁面往下滾動後如何讓 Navbar 黏著在視窗上方；其他當滾動滑鼠滾輪時可顯示、隱藏 Navbar ，最後當 Navbar 隱藏時透過監聽滑鼠行為，靠近時顯示及離開時隱藏。`,
-      link: `/test/${i}`
+      date: l.date,
+      title: l.title,
+      text: l.text,
+      link: l.link
     });
   }
 }
 
-function getArticleList() {}
+/**
+ * Get article list from google sheet.
+ * GET https://spreadsheets.google.com/feeds/list/{excel_id}/{sheet}/public/values?alt=json
+ */
+function getArticleList() {
+  let googleSheet = new Array();
+  $.ajax({
+    url: 'https://spreadsheets.google.com/feeds/list/1aEcM7Lo2HyBkwmqdvQsmuc06RWX6CB8vCsj8tFT1GRs/1/public/values?alt=json',
+    method: 'GET',
+    success: sheet => {
+      for(let data of sheet.feed.entry) {
+        googleSheet.push({
+          date: new Date(data.gsx$date.$t).toDateString().substring(4, 15),
+          title: data.gsx$title.$t,
+          text: `${data.gsx$text.$t}...`,
+          link: data.gsx$link.$t
+        });
+      }
+      console.table(googleSheet);
+    },
+    error: err => console.log(err)
+  })
+  .then(() => {
+    appendArticle(googleSheet.reverse());
+  });
+}
 
 init();
-appendArticle();
+getArticleList();

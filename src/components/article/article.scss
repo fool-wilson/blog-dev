@@ -11,9 +11,17 @@
     background-color: #ffffe0;
     box-shadow: 1px 1px 1px #888888;
   }
+  &__date {
+    width: 100%;
+    height: 10%;
+    color: #a9a9a9;
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: bold;
+  }
   &__title {
     width: 100%;
-    height: 25%;
+    height: 20%;
     font-size: 2.5rem;
     font-weight: bold;
   }
@@ -36,7 +44,7 @@
         color: white;
         border-color: #6495ed;
         background-color: #6495ed;
-        box-shadow: 1px 1px 1px 1px #888888;
+        box-shadow: 2px 2px 0 2px #888888;
       }
     }
   }

@@ -19,6 +19,7 @@ function create(block = $('body'), data) {
  * @param {Object} data The article title、text and url link
  */
 async function initArticleBox(dom, data) {
+  dom.find('#articleDate').text(data.date);
   dom.find('#articleTitle').text(data.title);
   dom.find('#articleText').text(data.text);
   dom.find('#readMore').attr('href', data.link);
