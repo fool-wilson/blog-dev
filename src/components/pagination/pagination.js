@@ -5,6 +5,11 @@ let currentList = new Array();
 let lists = new Object();
 let tailPage = new Number();
 
+/**
+ * Change list of view
+ * @param {String} newPage new hash of URL 
+ * @param {String} oldPage old hash of URL
+ */
 function changePage(newPage, oldPage = null) {
   let page = oldPage ? oldPage.split('-') : null;
   switch(newPage) {
@@ -20,6 +25,10 @@ function changePage(newPage, oldPage = null) {
   }
 }
 
+/**
+ * Initial pagination component
+ * @param {Object} data total data of list
+ */
 async function init(data = new Object()) {
   // console.log(pages);
   let pages = Object.keys(data);
@@ -45,6 +54,10 @@ async function init(data = new Object()) {
   }
 }
 
+/**
+ * When pagination be clicked to get hash of old and new URL
+ * @param {Event} e 
+ */
 function onClick(e) {
   const newPage = e.originalEvent.newURL.split('#')[1];
   const oldPage = e.originalEvent.oldURL.split('#')[1];
