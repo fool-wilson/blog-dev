@@ -1,0 +1,30 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &__frame {
+    width: 100%;
+    max-height: 10vh;
+  }
+  &__bar {
+    justify-content: space-evenly;
+    margin: 1.5rem 0;
+    width: 30vw;
+    max-width: 70vw;
+    &__button {
+      border-radius: .35rem;
+      border: .2rem solid #00bfff;
+      color: black;
+      padding: .5rem 1rem;
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-decoration: none;
+      transition: .5s;
+      &:hover {
+        background-color: #00bfff;
+        color: white;
+        transition: .5s;
+      }
+    }
+  }
+}

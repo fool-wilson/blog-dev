@@ -2,27 +2,16 @@ import article from './article.html';
 import './article.scss';
 
 /**
- * Create article block
- * @param {Document} block The html bolck document tree whitch to append the article block
- * @param {Object} data The article title、text and url link
+ * Create article block and insert list data to block
+ * @param {Object} list The article title、text and url link
  */
-function create(block = $('body'), data) {
+async function create(list) {
   let articleBox = $(article).contents();
-  initArticleBox(articleBox, data)
-  .then( () => block.append(articleBox) )
-  .catch( error => console.log(error) );
-}
-
-/**
- * Initial the article title、content text and button link
- * @param {Document} dom The article template document tree
- * @param {Object} data The article title、text and url link
- */
-async function initArticleBox(dom, data) {
-  dom.find('#articleDate').text(data.date);
-  dom.find('#articleTitle').text(data.title);
-  dom.find('#articleText').text(data.text);
-  dom.find('#readMore').attr('href', data.link);
+  articleBox.find('#articleDate').text(list.date);
+  articleBox.find('#articleTitle').text(list.title);
+  articleBox.find('#articleText').text(list.text);
+  articleBox.find('#readMore').attr('href', list.link);
+  return articleBox;
 }
 
 export default {

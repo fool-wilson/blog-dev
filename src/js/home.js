@@ -4,6 +4,7 @@ import '../scss/home.scss';
 import Article from '../components/article/article.js';
 import Foot from '../components/foot/foot.js';
 import Nav from '../components/nav/nav.js';
+import Pagination from '../components/pagination/pagination.js';
 
 /**
  * Initial home page view
@@ -17,15 +18,37 @@ function init() {
 /**
  * Create article list
  */
-function appendArticle(list) {
+function appendArticleList(list) {
+  $('#view').html('');
   for(let l of list) {
-    Article.create($('#view'), {
+    Article.create({
       date: l.date,
-      title: l.title,
+      link: l.link,
       text: l.text,
-      link: l.link
-    });
+      title: l.title
+    })
+    .then( article => {
+      $('#view').append(article) 
+    })
+    .catch( error => console.log(error) );
   }
+}
+
+/**
+ * Create pagination
+ * @param {Object} lists 
+ */
+function appendPagination(lists) {
+  Pagination.init(lists)
+  .then( pagination => {
+    if(pagination) {
+      $('#view').append(pagination);
+      location.hash = 'p-1';
+    } else {
+      appendArticleList(lists['p-1']);
+    }
+  })
+  .catch( error => console.log(error) );
 }
 
 /**
@@ -33,25 +56,29 @@ function appendArticle(list) {
  * GET https://spreadsheets.google.com/feeds/list/{excel_id}/{sheet}/public/values?alt=json
  */
 function getArticleList() {
-  let googleSheet = new Array();
+  let lists = new Object();
   $.ajax({
     url: 'https://spreadsheets.google.com/feeds/list/1aEcM7Lo2HyBkwmqdvQsmuc06RWX6CB8vCsj8tFT1GRs/1/public/values?alt=json',
     method: 'GET',
     success: sheet => {
-      for(let data of sheet.feed.entry) {
-        googleSheet.push({
+      // let page = new Number();
+      sheet.feed.entry.forEach( (data, index) => {
+        // if(index % 10 === 0) {
+        //   page = Math.floor((index/10)+1);
+          lists[`p-${index+1}`] = new Array();
+        // }
+        lists[`p-${index+1}`].unshift({
           date: new Date(data.gsx$date.$t).toDateString().substring(4, 15),
           title: data.gsx$title.$t,
           text: `${data.gsx$text.$t}...`,
           link: data.gsx$link.$t
         });
-      }
-      console.table(googleSheet);
+      });
     },
     error: err => console.log(err)
   })
   .then(() => {
-    appendArticle(googleSheet.reverse());
+    appendPagination(lists);
   });
 }
 
