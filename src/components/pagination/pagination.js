@@ -1,28 +1,20 @@
 import pagination from './pagination.html';
 import './pagination.scss';
 
-let currentList = new Array();
-let lists = new Object();
-let tailPage = new Number();
+let Pagination = {
+  data: new Object(),
+  init: init,
+  onChangeHash: onChangeHash,
+  tail: new Number()
+}
 
 /**
  * Change list of view
- * @param {String} newPage new hash of URL 
- * @param {String} oldPage old hash of URL
+ * @param {Object} data list data
+ * @param {String} page now hash of URL
  */
-function changePage(newPage, oldPage = null) {
-  let page = oldPage ? oldPage.split('-') : null;
-  switch(newPage) {
-    case 'prev':
-      location.hash = `${page[0]}-${parseInt(page[1])-1 || 1}`;
-      break;
-    case 'next':
-      let next = parseInt(page[1])+1 > tailPage ? tailPage : parseInt(page[1])+1;
-      location.hash = `${page[0]}-${next}`;
-      break;
-    default:
-      currentList = lists[newPage];
-  }
+async function changeListData(data, page) {
+  return data[page];
 }
 
 /**
@@ -30,17 +22,15 @@ function changePage(newPage, oldPage = null) {
  * @param {Object} data total data of list
  */
 async function init(data = new Object()) {
-  // console.log(pages);
   let pages = Object.keys(data);
-  lists = data;
-  tailPage = pages.length;
+  this.data = data;
+  this.tail = pages.length;
   if(pages.length <= 1) {
     return null;
   } else {
-    $(window).on('hashchange', onClick);
     let paginationBar = $(pagination).contents();
     paginationBar.find('#pageButtons').append(
-      `<a id="prev" href="#prev" class="pagination pagination__bar__button">Prev</a>`+
+      `<a id="prev" class="pagination pagination__bar__button">Prev</a>`+
       `<span>...</span>`
     );
     for(let page of pages) {
@@ -48,23 +38,37 @@ async function init(data = new Object()) {
     }
     paginationBar.find('#pageButtons').append(
       `<span>...</span>`+
-      `<a id="next" href="#next" class="pagination pagination__bar__button">Next</a>`
+      `<a id="next" class="pagination pagination__bar__button">Next</a>`
     );
+    $(paginationBar).find('#prev').on('click', turnPage);
+    $(paginationBar).find('#next').on('click', turnPage);
     return paginationBar;
   }
 }
 
 /**
- * When pagination be clicked to get hash of old and new URL
- * @param {Event} e 
+ * When URL hash has be changed
  */
-function onClick(e) {
-  const newPage = e.originalEvent.newURL.split('#')[1];
-  const oldPage = e.originalEvent.oldURL.split('#')[1];
-  changePage(newPage, oldPage);
+function onChangeHash() {
+  const page = location.hash;
+  $('.pagination__bar__button--active').removeClass('pagination__bar__button--active');
+  $(page).addClass('pagination__bar__button--active');
+  return changeListData(this.data, page.split('#')[1]);
 }
 
-export default {
-  currentList: currentList,
-  init: init
+function turnPage() {
+  const action = this.innerText;
+  const page = location.hash.split('-');
+  switch(action) {
+    case 'Prev':
+      location.hash = `${page[0]}-${parseInt(page[1])-1 || 1}`;
+      break;
+    case 'Next':
+      let next = parseInt(page[1])+1 > Pagination.tail ? Pagination.tail : parseInt(page[1])+1;
+      location.hash = `${page[0]}-${next}`;
+      break;
+    default:
+  }
 }
+
+export default Pagination;
